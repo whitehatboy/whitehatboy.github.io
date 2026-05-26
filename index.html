@@ -1,0 +1,2476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Portfolio of Martin Louie Sobrino, a full-stack engineer building maintainable web systems with PHP, Node.js, React, and MySQL."
+  />
+  <title>Martin Louie Sobrino | Full-Stack Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #06131a;
+      --bg-deep: #030a10;
+      --panel: rgba(10, 24, 34, 0.72);
+      --panel-strong: rgba(12, 29, 40, 0.92);
+      --text: #edf7fb;
+      --muted: #9fb7c6;
+      --line: rgba(173, 229, 255, 0.14);
+      --aqua: #7ce9ff;
+      --mint: #9bffb3;
+      --peach: #ffc58d;
+      --glow: 0 24px 80px rgba(8, 28, 41, 0.45);
+      --radius: 24px;
+      --container: min(1180px, calc(100vw - 32px));
+      --nav-height: 84px;
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(124, 233, 255, 0.14), transparent 32%),
+        radial-gradient(circle at 85% 20%, rgba(155, 255, 179, 0.15), transparent 18%),
+        linear-gradient(180deg, #0a1822 0%, var(--bg-deep) 42%, #040b11 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle 280px at var(--mouse-x) var(--mouse-y), rgba(124, 233, 255, 0.12), transparent 72%),
+        linear-gradient(rgba(173, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(173, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: auto, 72px 72px, 72px 72px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), transparent 96%);
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(3, 10, 16, 0.92);
+      backdrop-filter: blur(14px);
+      z-index: 20;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-mark {
+      display: grid;
+      gap: 14px;
+      justify-items: center;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.76rem;
+    }
+
+    .loader-ring {
+      width: 82px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(124, 233, 255, 0.25);
+      border-top-color: var(--aqua);
+      animation: spin 1s linear infinite;
+      box-shadow: 0 0 32px rgba(124, 233, 255, 0.2);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(3, 10, 16, 0.55);
+      border-bottom: 1px solid rgba(173, 229, 255, 0.08);
+    }
+
+    .site-nav {
+      min-height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-lockup {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124, 233, 255, 0.22), rgba(155, 255, 179, 0.22));
+      border: 1px solid rgba(173, 229, 255, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      color: var(--aqua);
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--aqua), var(--mint));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .availability-pill {
+      padding: 0.72rem 1rem;
+      border-radius: 999px;
+      background: rgba(124, 233, 255, 0.08);
+      border: 1px solid rgba(124, 233, 255, 0.16);
+      color: var(--aqua);
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+
+    main {
+      padding-bottom: 48px;
+    }
+
+    section {
+      padding: 28px 0;
+    }
+
+    .section-copy {
+      max-width: none;
+      margin-bottom: 24px;
+    }
+
+    .section-copy.full-width,
+    .section-copy.full-width .lede {
+      max-width: none;
+    }
+
+    .lede.justify {
+      text-align: justify;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: var(--aqua);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(124, 233, 255, 0), rgba(124, 233, 255, 1));
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      font-family: "Syne", "Segoe UI", sans-serif;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6.4rem);
+      max-width: 12ch;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      max-width: none;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .lede {
+      max-width: none;
+      font-size: 1.04rem;
+    }
+
+    .hero {
+      min-height: calc(100vh - var(--nav-height));
+      display: grid;
+      align-items: center;
+      padding-top: 40px;
+      padding-bottom: 68px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.95fr);
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 22px;
+      align-content: center;
+    }
+
+    .headline-wrap {
+      display: grid;
+      gap: 14px;
+    }
+
+    .headline-emphasis {
+      color: var(--aqua);
+      text-shadow: 0 0 28px rgba(124, 233, 255, 0.25);
+    }
+
+    .hero-actions,
+    .social-row,
+    .project-links,
+    .contact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 20px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, var(--aqua), var(--mint));
+      color: #041118;
+      font-weight: 700;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+      box-shadow: 0 14px 35px rgba(124, 233, 255, 0.18);
+    }
+
+    .btn:hover,
+    .btn:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(124, 233, 255, 0.22);
+    }
+
+    .btn.secondary {
+      background: rgba(124, 233, 255, 0.05);
+      color: var(--text);
+      border-color: rgba(124, 233, 255, 0.2);
+      box-shadow: none;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .stat-card,
+    .glass-card,
+    .service-card,
+    .project-card,
+    .timeline-card,
+    .testimonial-card,
+    .blog-card,
+    .contact-card,
+    .stack-card,
+    .study-card,
+    .skill-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid rgba(173, 229, 255, 0.12);
+      background: linear-gradient(180deg, rgba(15, 30, 42, 0.94), rgba(7, 18, 26, 0.82));
+      box-shadow: var(--glow);
+      backdrop-filter: blur(16px);
+    }
+
+    .stat-card {
+      padding: 18px;
+    }
+
+    .stat-value {
+      font-family: "Syne", sans-serif;
+      font-size: 1.9rem;
+      color: var(--text);
+    }
+
+    .hero-panel {
+      position: relative;
+      padding: 24px;
+      display: grid;
+      gap: 18px;
+      min-height: 100%;
+    }
+
+    .hero-panel::before,
+    .project-card::before,
+    .service-card::before,
+    .study-card::before,
+    .timeline-card::before,
+    .contact-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% 65% auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 233, 255, 0.18), transparent 68%);
+      pointer-events: none;
+    }
+
+    .profile-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--peach);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+
+    .portrait {
+      min-height: 280px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(9, 25, 35, 0.4), rgba(4, 12, 19, 0.88));
+      border: 1px solid rgba(173, 229, 255, 0.14);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portrait::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(173, 229, 255, 0.12);
+    }
+
+    .portrait-image {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 22px;
+    }
+
+    .portrait-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(3, 10, 16, 0.72);
+      border: 1px solid rgba(173, 229, 255, 0.16);
+      backdrop-filter: blur(6px);
+    }
+
+    .mini-panel {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .mini-stat {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(173, 229, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-family: "Syne", sans-serif;
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4,
+    .projects-grid,
+    .stack-grid,
+    .timeline-grid,
+    .studies-grid,
+    .blog-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3,
+    .projects-grid,
+    .blog-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4,
+    .stack-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .glass-card,
+    .skill-card,
+    .service-card,
+    .stack-card,
+    .project-card,
+    .study-card,
+    .timeline-card,
+    .testimonial-card,
+    .blog-card,
+    .contact-card {
+      padding: 24px;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .glass-card:hover,
+    .skill-card:hover,
+    .service-card:hover,
+    .stack-card:hover,
+    .project-card:hover,
+    .study-card:hover,
+    .timeline-card:hover,
+    .testimonial-card:hover,
+    .blog-card:hover,
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(124, 233, 255, 0.28);
+      box-shadow: 0 28px 80px rgba(5, 20, 30, 0.5);
+    }
+
+    .highlight-list,
+    .service-points,
+    .study-list,
+    .contact-list,
+    .footer-nav {
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .highlight-list li,
+    .service-points li,
+    .study-list li,
+    .contact-list li {
+      display: flex;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .highlight-list li::before,
+    .service-points li::before,
+    .study-list li::before,
+    .contact-list li::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--aqua), var(--mint));
+      margin-top: 0.55rem;
+      flex: 0 0 auto;
+      box-shadow: 0 0 18px rgba(124, 233, 255, 0.4);
+    }
+
+    .skill-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .skill-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--aqua), var(--mint));
+      transform-origin: left;
+      animation: loadBar 1.2s ease both;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.48rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(173, 229, 255, 0.08);
+      color: var(--text);
+      font-size: 0.88rem;
+      line-height: 1;
+    }
+
+    .service-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .service-icon,
+    .stack-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(124, 233, 255, 0.08);
+      border: 1px solid rgba(124, 233, 255, 0.14);
+      color: var(--aqua);
+      font-family: "Syne", sans-serif;
+    }
+
+    .stack-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 6px rgba(124, 233, 255, 0.25));
+    }
+
+    .stack-fallback {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .projects-grid {
+      align-items: stretch;
+    }
+
+    .project-card {
+      display: grid;
+      gap: 18px;
+    }
+
+    .project-visual {
+      min-height: 210px;
+      border-radius: 20px;
+      border: 1px solid rgba(173, 229, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(124, 233, 255, 0.16), rgba(255, 197, 141, 0.08), rgba(155, 255, 179, 0.16));
+    }
+
+    .project-visual::before,
+    .project-visual::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      transition: transform 0.35s ease;
+    }
+
+    .project-visual::before {
+      inset: 16% auto auto 12%;
+      width: 58%;
+      height: 58%;
+      background: rgba(4, 17, 24, 0.76);
+      border: 1px solid rgba(173, 229, 255, 0.18);
+    }
+
+    .project-visual::after {
+      right: 10%;
+      bottom: 12%;
+      width: 36%;
+      height: 20%;
+      background: rgba(4, 17, 24, 0.92);
+      border: 1px solid rgba(173, 229, 255, 0.14);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    .project-card:hover .project-visual::before {
+      transform: translate3d(8px, -8px, 0);
+    }
+
+    .project-card:hover .project-visual::after {
+      transform: translate3d(-10px, 8px, 0);
+    }
+
+    .project-meta,
+    .study-metrics,
+    .testimonial-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 0.72rem;
+      border-radius: 999px;
+      background: rgba(124, 233, 255, 0.07);
+      border: 1px solid rgba(124, 233, 255, 0.14);
+      color: var(--aqua);
+      font-size: 0.83rem;
+      line-height: 1;
+    }
+
+    .study-card,
+    .timeline-card,
+    .blog-card {
+      display: grid;
+      gap: 18px;
+    }
+
+    .metric-block {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(173, 229, 255, 0.1);
+      min-width: 120px;
+    }
+
+    .metric-block strong {
+      display: block;
+      font-size: 1.5rem;
+      font-family: "Syne", sans-serif;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .timeline-card details {
+      border-top: 1px solid rgba(173, 229, 255, 0.1);
+      padding-top: 16px;
+    }
+
+    .timeline-card summary {
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 600;
+      list-style: none;
+    }
+
+    .timeline-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .testimonial-stage {
+      position: relative;
+      min-height: 280px;
+    }
+
+    .testimonial-card {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      gap: 18px;
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .testimonial-card.is-active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    blockquote {
+      margin: 0;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .quote-mark {
+      font-family: "Syne", sans-serif;
+      font-size: 3rem;
+      line-height: 0.85;
+      color: rgba(124, 233, 255, 0.3);
+    }
+
+    .testimonial-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(173, 229, 255, 0.18);
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .dot.is-active {
+      background: linear-gradient(135deg, var(--aqua), var(--mint));
+      box-shadow: 0 0 18px rgba(124, 233, 255, 0.42);
+    }
+
+    .stack-card {
+      display: grid;
+      gap: 14px;
+      justify-items: start;
+    }
+
+    .blog-card small,
+    .timeline-meta,
+    .muted-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 18px;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(173, 229, 255, 0.12);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: rgba(124, 233, 255, 0.42);
+      box-shadow: 0 0 0 4px rgba(124, 233, 255, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-note {
+      min-height: 24px;
+      color: var(--aqua);
+      font-size: 0.92rem;
+    }
+
+    .contact-chip {
+      padding: 0.7rem 0.92rem;
+      border-radius: 999px;
+      border: 1px solid rgba(173, 229, 255, 0.12);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+    }
+
+    .social-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.85rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(173, 229, 255, 0.14);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .social-link:hover,
+    .social-link:focus-visible {
+      border-color: rgba(124, 233, 255, 0.36);
+      background: rgba(124, 233, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .social-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      flex: 0 0 auto;
+      background: #ffffff;
+      padding: 2px;
+    }
+
+    .social-copy {
+      display: grid;
+      gap: 2px;
+    }
+
+    .social-label {
+      color: var(--text);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .social-handle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .project-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(3, 10, 16, 0.86);
+      backdrop-filter: blur(6px);
+      z-index: 40;
+    }
+
+    .project-modal {
+      width: min(980px, 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(173, 229, 255, 0.18);
+      background: linear-gradient(180deg, rgba(15, 30, 42, 0.96), rgba(7, 18, 26, 0.96));
+      box-shadow: 0 32px 90px rgba(2, 12, 19, 0.62);
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .project-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .project-modal-close {
+      min-height: 38px;
+      min-width: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(173, 229, 255, 0.22);
+      background: rgba(124, 233, 255, 0.08);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-modal-close:hover,
+    .project-modal-close:focus-visible {
+      background: rgba(124, 233, 255, 0.16);
+      border-color: rgba(124, 233, 255, 0.4);
+      outline: none;
+    }
+
+    .project-modal-stage {
+      border-radius: 14px;
+      border: 1px solid rgba(173, 229, 255, 0.12);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .project-modal-image {
+      width: 100%;
+      max-height: 62vh;
+      object-fit: contain;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .project-modal-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .project-thumb {
+      border-radius: 12px;
+      border: 1px solid rgba(173, 229, 255, 0.14);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .project-thumb.is-active,
+    .project-thumb:hover,
+    .project-thumb:focus-visible {
+      border-color: rgba(124, 233, 255, 0.44);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .project-thumb.is-active img {
+      opacity: 1;
+    }
+
+    .footer {
+      padding: 24px 0 48px;
+      color: var(--muted);
+    }
+
+    .footer-shell {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(173, 229, 255, 0.08);
+    }
+
+    .footer-nav {
+      grid-auto-flow: column;
+      gap: 18px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scaleY(0.32);
+      }
+
+      50% {
+        transform: scaleY(1);
+      }
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes loadBar {
+      from {
+        transform: scaleX(0);
+      }
+
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .about-layout,
+      .contact-layout,
+      .grid-3,
+      .projects-grid,
+      .blog-grid,
+      .grid-4,
+      .stack-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .site-nav {
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        row-gap: 10px;
+        padding-bottom: 10px;
+      }
+
+      .footer-shell {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .availability-pill {
+        margin-bottom: 0;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid,
+      .about-layout,
+      .contact-layout,
+      .grid-2,
+      .grid-3,
+      .projects-grid,
+      .grid-4,
+      .stack-grid,
+      .studies-grid,
+      .timeline-grid,
+      .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+      }
+
+      .hero-stats,
+      .mini-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-nav {
+        grid-auto-flow: row;
+      }
+
+      .project-modal {
+        padding: 16px;
+      }
+
+      .project-modal-thumbs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .site-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 10px;
+      }
+
+      .availability-pill {
+        margin-bottom: 8px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --container: calc(100vw - 24px);
+      }
+
+      .availability-pill {
+        display: none;
+      }
+
+      .glass-card,
+      .skill-card,
+      .service-card,
+      .stack-card,
+      .project-card,
+      .study-card,
+      .timeline-card,
+      .testimonial-card,
+      .blog-card,
+      .contact-card,
+      .hero-panel {
+        padding: 20px;
+      }
+
+      h1 {
+        max-width: 10ch;
+      }
+
+      .project-modal-backdrop {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script src="./assets/vendor/react.production.min.js"></script>
+  <script src="./assets/vendor/react-dom.production.min.js"></script>
+
+  <script>
+    (() => {
+      const {
+        createElement: e,
+        Fragment,
+        useEffect,
+        useRef,
+        useState
+      } = React;
+
+      const heroStats = [
+        { value: "10+", label: "Years in software and IT delivery" },
+        { value: "8", label: "Organizations supported across sectors" },
+        { value: "Full-Stack", label: "Frontend, backend, and database ownership" }
+      ];
+
+      const highlights = [
+        "Builds and maintains complete web systems from interface design to backend logic and database structure.",
+        "Improves legacy applications through structured refactoring, feature expansion, and practical workflow optimization.",
+        "Supports operations beyond development through troubleshooting, reporting, and event-based technical assistance."
+      ];
+
+      const skills = [
+        {
+          group: "Backend and API Engineering",
+          level: 93,
+          tools: ["PHP", "Node.js", "Express", "MVC"]
+        },
+        {
+          group: "Frontend Development",
+          level: 90,
+          tools: ["React", "JavaScript", "HTML", "CSS"]
+        },
+        {
+          group: "Database and Reporting",
+          level: 91,
+          tools: ["MySQL", "Relational Databases", "DBMS", "Data Analysis"]
+        },
+        {
+          group: "Delivery and Collaboration",
+          level: 85,
+          tools: ["Git", "GitHub", "CI/CD Basics", "AI-assisted development"]
+        }
+      ];
+
+      const services = [
+        {
+          icon: "FS",
+          title: "Full-Stack Web Development",
+          text: "Designs, builds, and maintains web applications from frontend interface to backend logic and database workflows.",
+          points: ["Custom web systems", "API and module development", "Deployment-ready builds"]
+        },
+        {
+          icon: "LM",
+          title: "Legacy System Modernization",
+          text: "Enhances existing systems through codebase cleanup, feature updates, and architecture improvements for maintainability.",
+          points: ["Refactoring", "Feature enhancements", "Compatibility updates"]
+        },
+        {
+          icon: "DR",
+          title: "Database and Reporting Solutions",
+          text: "Builds reliable database structures and reporting modules to support auditing, monitoring, and operations.",
+          points: ["Schema design", "Reporting modules", "Data validation"]
+        },
+        {
+          icon: "MS",
+          title: "Maintenance and Technical Support",
+          text: "Provides continuous support, troubleshooting, and operational fixes to keep systems stable and usable.",
+          points: ["Bug fixing", "System support", "Operational troubleshooting"]
+        }
+      ];
+
+      const projects = [
+        {
+          title: "Government Procurement System Upgrade",
+          summary: "Maintained and delivered a new version of a BAC office web system with improved workflow structure, reporting, and usability.",
+          tags: ["PHP", "MySQL", "Workflow Optimization", "JavaScript"],
+          sampleImages: [
+            "assets/images/gps/dashboard.png",
+            "assets/images/gps/bidding_quotation.png",
+            "assets/images/gps/purchase_order.png",
+            "assets/images/gps/purchase_request.png"
+          ],
+          links: [
+            { label: "Project Inquiry", href: "#contact" },
+            { label: "Case Summary", href: "#case-studies" }
+          ]
+        },
+        {
+          title: "Infirmary Hospital Management System",
+          summary: "Developed and maintained patient records, billing, and administrative modules for daily hospital operations.",
+          tags: ["Full-Stack", "Billing", "Patient Records"],
+          sampleImages: [
+            "assets/images/drhb/dashboard.png",
+            "assets/images/drhb/patient.png",
+            "assets/images/drhb/service_item.png",
+            "assets/images/drhb/transaction.png"
+          ],
+          links: [
+            { label: "Project Inquiry", href: "#contact" },
+            { label: "Case Summary", href: "#case-studies" }
+          ]
+        },
+        {
+          title: "Vet Clinic Management System",
+          summary: "Developed and maintained a web-based clinic management system for monitoring appointments, daily activities, transactions, and reports, including frontend and backend modules, database operations, system maintenance, and technical support.",
+          tags: ["Full-Stack", "Clinic Operations", "Transactions", "Reporting"],
+          sampleImages: [
+            "assets/images/redmarks/dashboard.png",
+            "assets/images/redmarks/customer_details.png",
+            "assets/images/redmarks/summary_report.png"
+          ],
+          links: [
+            { label: "Project Inquiry", href: "#contact" },
+            { label: "Case Summary", href: "#case-studies" }
+          ]
+        },
+        {
+          title: "Hardware Tracking System",
+          summary: "Built an IT hardware lifecycle tracking system for inventory, assignment, maintenance records, and accountability reporting.",
+          tags: ["Asset Management", "Reporting", "Operations"],
+          sampleImages: [
+            "assets/images/hts/dashboard.png",
+            "assets/images/hts/hardware.png",
+            "assets/images/hts/employee.png",
+            "assets/images/hts/assignment_summary.png"
+          ],
+          links: [
+            { label: "Project Inquiry", href: "#contact" },
+            { label: "Case Summary", href: "#case-studies" }
+          ]
+        }
+      ];
+
+      const caseStudies = [
+        {
+          title: "Government Procurement Workflow Improvement",
+          problem: "Daily BAC operations required stable reporting, accurate records, and faster processing of routine tasks.",
+          solution: "Enhanced and restructured the system with improved modules, clearer workflows, and stronger support for office reporting.",
+          result: [
+            { stat: "Improved", label: "day-to-day process flow" },
+            { stat: "Stable", label: "operations and support continuity" }
+          ]
+        },
+        {
+          title: "Hospital Administrative System Delivery",
+          problem: "Patient management and billing tasks needed better structure, accuracy, and day-to-day reliability.",
+          solution: "Implemented full-stack modules for registration, records tracking, invoicing, and operational reporting.",
+          result: [
+            { stat: "Better", label: "record and billing accuracy" },
+            { stat: "Faster", label: "administrative processing" }
+          ]
+        }
+      ];
+
+      const timeline = [
+        {
+          period: "2023 - Present",
+          role: "Computer Programmer",
+          company: "Provincial Government of Negros Occidental",
+          summary: "Maintains, supports, and enhances BAC office web systems while improving workflows, reporting reliability, and day-to-day operational stability.",
+          details: "Leads maintenance and feature enhancement of BAC systems, including troubleshooting, bug fixing, database upkeep, and user support. Delivered an upgraded BAC management system with improved workflow structure, optimized processes, stronger reporting, and better usability. Provides event-based technical support for official activities, including system setup, hardware/network troubleshooting, and real-time issue resolution. Also designed and deployed a tourism-focused interactive web game and developed a Hardware Tracking System for the IT Office covering inventory, assignment, maintenance records, lifecycle monitoring, and accountability reporting."
+        },
+        {
+          period: "2025",
+          role: "Full-Stack Engineer",
+          company: "Braveyard Poultry Supply",
+          summary: "Developed a Poultry Supply POS and Inventory Management System to streamline transactions, stock tracking, supplier workflows, and daily operations.",
+          details: "Handled frontend and backend development, database design, and POS features including barcode scanning, sales processing, receipt generation, and stock control. Implemented modules for customer accounts, supplier records, purchase orders, and sales reporting, with responsive interfaces for cashier and staff usability. Added real-time inventory and low-stock monitoring, generated operational and financial reports, and provided maintenance, troubleshooting, and continuous enhancements for stable day-to-day store operations."
+        },
+        {
+          period: "2024 - 2025",
+          role: "Full-Stack Engineer",
+          company: "Dr Rodolfo T. Blancia Jr Infirmary",
+          summary: "Built and maintained a web-based hospital management system for records, billing, and operations.",
+          details: "Owned frontend and backend development, database design, reporting modules, and ongoing maintenance to keep workflows efficient and reliable for daily use."
+        },
+        {
+          period: "2015 - 2018",
+          role: "IT Consultant, In-House Programmer, and Full-Stack Engineer",
+          company: "Construction, Security, and Clinic Systems",
+          summary: "Delivered multiple business web systems covering transactions, monitoring, scheduling, and reporting.",
+          details: "Worked across several organizations to implement modules, validate report integrity, maintain databases, and provide technical support in legacy and growing environments."
+        }
+      ];
+
+      const techStack = [
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+          name: "React",
+          text: "Builds component-driven user interfaces with reusable frontend patterns."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+          name: "Node.js",
+          text: "Builds JavaScript-powered backend services and tooling with Node.js."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+          name: "Express.js",
+          text: "Builds lightweight backend services and APIs using Express.js."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
+          name: "PHP",
+          text: "Develops server-side functionality for dynamic websites and integrations."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+          name: "MySQL",
+          text: "Designs and queries relational datasets using MySQL."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+          name: "JavaScript",
+          text: "Implements interactive behavior and frontend logic across browser environments."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
+          name: "HTML5",
+          text: "Creates semantic, accessible page structure for reliable web foundations."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+          name: "CSS3",
+          text: "Builds responsive, maintainable styles for modern user interfaces."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+          name: "Git",
+          text: "Uses version control for branching, collaboration, and clean change history."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg",
+          name: "GitHub",
+          text: "Manages repositories, reviews, and collaboration workflows on GitHub."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+          name: "Docker",
+          text: "Uses containerized workflows for consistent environments and easier deployments."
+        },
+        {
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg",
+          name: "Linux",
+          text: "Builds and supports systems in Linux-based development and server environments."
+        },
+        {
+          icon: "AI",
+          name: "AI-Assisted Development Tools",
+          text: "Uses ChatGPT and Copilot to accelerate coding, debugging, and documentation workflows."
+        },
+        {
+          icon: "CD",
+          name: "CI/CD Basics",
+          text: "Understands deployment-aware workflows, build pipelines, and release hygiene."
+        },
+        {
+          icon: "DB",
+          name: "DBMS",
+          text: "Applies database management system fundamentals for structured data operations."
+        },
+        {
+          icon: "MVC",
+          name: "MVC",
+          text: "Applies Model-View-Controller principles for cleaner architecture and maintainability."
+        },
+        {
+          icon: "RD",
+          name: "Relational Databases",
+          text: "Designs data models and relationships for consistency and query performance."
+        },
+        {
+          icon: "WEB",
+          name: "Web Development",
+          text: "Delivers end-to-end web solutions from frontend structure to backend behavior."
+        }
+      ];
+
+      const stackSkills = [
+        { icon: "ATD", name: "Attention to Detail", text: "Maintains accuracy and consistency in implementation, QA, and delivery." },
+        { icon: "BI", name: "Business Intelligence", text: "Transforms business and product data into practical, decision-ready insights." },
+        { icon: "CL", name: "Continuous Learning Mindset", text: "Actively adopts new patterns, tools, and best practices over time." },
+        { icon: "PS", name: "Problem-Solving and Logical Thinking", text: "Breaks down complex issues into practical, testable implementation steps." },
+        { icon: "RS", name: "Research", text: "Validates decisions through technical investigation and requirement analysis." },
+        { icon: "SD", name: "System Design", text: "Plans architecture decisions with scalability, reliability, and maintainability in mind." },
+        { icon: "WD", name: "Web Design", text: "Crafts user-focused visual direction and interface presentation for the web." },
+        { icon: "DA", name: "Data Analysis", text: "Interprets datasets to identify trends, opportunities, and performance signals." },
+        { icon: "MO", name: "Microsoft Office", text: "Prepares reports, documentation, and communication artifacts using Office tools." },
+        { icon: "PM", name: "Project Management", text: "Coordinates scope, priorities, and timelines to keep workstreams on track." }
+      ];
+
+      const insights = [
+        {
+          title: "Maintaining legacy PHP systems without slowing delivery",
+          text: "Practical ways to modernize legacy features while preserving business-critical workflows.",
+          meta: "Legacy engineering"
+        },
+        {
+          title: "How to structure full-stack modules for maintainability",
+          text: "A simple approach to keeping frontend, backend, and database changes aligned and easier to support.",
+          meta: "System architecture"
+        },
+        {
+          title: "Building reporting features users actually trust",
+          text: "Lessons from operational systems where accuracy and consistency matter more than visual complexity.",
+          meta: "Reporting and data"
+        }
+      ];
+
+      function useReveal() {
+        const ref = useRef(null);
+
+        useEffect(() => {
+          const node = ref.current;
+
+          if (!node) {
+            return undefined;
+          }
+
+          const observer = new IntersectionObserver(
+            entries => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  node.classList.add("is-visible");
+                  observer.unobserve(node);
+                }
+              });
+            },
+            { threshold: 0.16 }
+          );
+
+          observer.observe(node);
+
+          return () => observer.disconnect();
+        }, []);
+
+        return ref;
+      }
+
+      function SectionHeader(props) {
+        return e(
+          "div",
+          { className: `section-copy${props.fullWidth ? " full-width" : ""}` },
+          e("span", { className: "eyebrow" }, props.eyebrow),
+          e("h2", null, props.title),
+          e("p", { className: `lede${props.justify ? " justify" : ""}` }, props.text)
+        );
+      }
+
+      function Header() {
+        const links = [
+          ["About", "#about"],
+          ["Services", "#services"],
+          ["Projects", "#projects"],
+          ["Contact", "#contact"]
+        ];
+
+        return e(
+          "header",
+          { className: "site-header" },
+          e(
+            "div",
+            { className: "container site-nav" },
+            e(
+              "a",
+              { className: "brand-lockup", href: "#top", "aria-label": "Martin Louie Sobrino home" },
+              e("span", { className: "brand-badge", "aria-hidden": "true" }, "WB"),
+              e(
+                "span",
+                { className: "brand-name" },
+                "Martin Louie Sobrino"
+              )
+            ),
+            e(
+              "nav",
+              { className: "nav-links", "aria-label": "Primary" },
+              links.map(link =>
+                e("a", { key: link[0], href: link[1] }, link[0])
+              )
+            ),
+            e("span", { className: "availability-pill" }, "Open to full-stack roles and project work")
+          )
+        );
+      }
+
+      function Hero() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { className: "hero", id: "top" },
+          e(
+            "div",
+            { className: "container hero-grid reveal", ref },
+            e(
+              "div",
+              { className: "hero-copy" },
+              e("span", { className: "eyebrow" }, "Full-Stack Engineer Portfolio"),
+              e(
+                "div",
+                { className: "headline-wrap" },
+                e(
+                  "h1",
+                  null,
+                  "Building ",
+                  e("span", { className: "headline-emphasis" }, "reliable"),
+                  " full-stack systems for real-world operations."
+                ),
+                e(
+                  "p",
+                  { className: "lede" },
+                  "I develop maintainable web applications across frontend, backend, and databases, with practical experience in government, healthcare, construction, and service operations."
+                )
+              ),
+              e(
+                "div",
+                { className: "hero-actions" },
+                e("a", { className: "btn", href: "#projects" }, "View Projects"),
+                e("a", { className: "btn secondary", href: "#experience" }, "Experience"),
+                e("a", { className: "btn secondary", href: "#contact" }, "Contact Me")
+              ),
+              e(
+                "div",
+                { className: "hero-stats" },
+                heroStats.map(item =>
+                  e(
+                    "article",
+                    { className: "stat-card", key: item.label },
+                    e("div", { className: "stat-value" }, item.value),
+                    e("p", null, item.label)
+                  )
+                )
+              )
+            ),
+            e(
+              "aside",
+              { className: "hero-panel glass-card" },
+              e("span", { className: "profile-badge" }, "Full-stack delivery for operations-focused teams"),
+              e(
+                "div",
+                { className: "portrait", style: { animation: "float 6s ease-in-out infinite" } },
+                e("img", {
+                  className: "portrait-image",
+                  src: "assets/images/profile.png",
+                  alt: "Portrait of Martin Louie Sobrino"
+                }),
+                e(
+                  "div",
+                  { className: "portrait-caption" },
+                  e("h3", null, "Systems mindset. Engineer execution."),
+                  e(
+                    "p",
+                    { style: { marginTop: "8px" } },
+                    "From business requirements to deployment support, each build is structured for clarity, stability, and long-term maintainability."
+                  )
+                )
+              ),
+              e(
+                "div",
+                { className: "mini-panel" },
+                e(
+                  "div",
+                  { className: "mini-stat" },
+                  e("strong", null, "10+"),
+                  e("p", null, "years of software experience")
+                ),
+                e(
+                  "div",
+                  { className: "mini-stat" },
+                  e("strong", null, "End-to-End"),
+                  e("p", null, "frontend, backend, and data")
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function AboutSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "about" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "About Me",
+              title: "Full-stack engineer focused on maintainable systems and practical outcomes.",
+              fullWidth: true,
+              justify: true,
+              text: "Experienced Software Engineer with a proven track record in the information technology and services industry, specializing in full-stack development using PHP and modern web technologies. Proficient in building scalable applications, integrating third-party libraries, and working across operating systems and network environments. Adaptable to modern development practices, including AI-assisted pair programming (e.g., GitHub Copilot, ChatGPT) to accelerate development, improve code quality, and streamline problem-solving. Experienced in working with contemporary stacks such as React, Node.js, Express, and MySQL, with a focus on clean architecture and maintainable systems. Demonstrates a strong commitment to continuous learning, actively exploring emerging technologies, frameworks, and best practices to stay current in a rapidly evolving tech landscape."
+            }),
+            e(
+              "div",
+              { className: "about-layout" },
+              e(
+                "article",
+                { className: "glass-card" },
+                e("h3", null, "Approach"),
+                e(
+                  "p",
+                  { style: { marginTop: "12px", marginBottom: "18px" } },
+                  "I approach projects as operational systems, not just screens. That means balancing usability, backend reliability, and reporting integrity so teams can depend on the software every day."
+                ),
+                e(
+                  "ul",
+                  { className: "highlight-list" },
+                  highlights.map(item =>
+                    e("li", { key: item }, item)
+                  )
+                )
+              ),
+              e(
+                "article",
+                { className: "glass-card" },
+                e("h3", null, "Highlights"),
+                e(
+                  "div",
+                  { className: "mini-panel", style: { marginTop: "18px" } },
+                  e(
+                    "div",
+                    { className: "mini-stat" },
+                    e("strong", null, "10+"),
+                    e("p", null, "years in software and IT environments")
+                  ),
+                  e(
+                    "div",
+                    { className: "mini-stat" },
+                    e("strong", null, "4"),
+                    e("p", null, "core sectors: government, healthcare, construction, services")
+                  ),
+                  e(
+                    "div",
+                    { className: "mini-stat" },
+                    e("strong", null, "Bacolod City"),
+                    e("p", null, "Western Visayas, Philippines")
+                  ),
+                  e(
+                    "div",
+                    { className: "mini-stat" },
+                    e("strong", null, "BSIT"),
+                    e("p", null, "University of St. La Salle")
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function SkillsSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "skills" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Skills and Expertise",
+              title: "Practical full-stack capability for production systems.",
+              text: "These skill groups reflect real project ownership across frontend interfaces, backend modules, relational data, and technical operations support."
+            }),
+            e(
+              "div",
+              { className: "grid-2" },
+              skills.map(skill =>
+                e(
+                  "article",
+                  { className: "skill-card", key: skill.group },
+                  e(
+                    "div",
+                    { className: "skill-head" },
+                    e("h3", null, skill.group),
+                    e("span", { className: "meta-chip" }, `${skill.level}%`)
+                  ),
+                  e(
+                    "div",
+                    { className: "progress-track", "aria-hidden": "true" },
+                    e("div", { className: "progress-bar", style: { width: `${skill.level}%` } })
+                  ),
+                  e(
+                    "div",
+                    { className: "tafg-row" },
+                    skill.tools.map(tool =>
+                      e("span", { className: "tag", key: tool }, tool)
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function ServicesSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "services" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Services",
+              title: "Full-stack services aligned with operational needs.",
+              text: "Service coverage is built for organizations that need stable systems, clear reporting, and maintainable delivery across the whole web stack."
+            }),
+            e(
+              "div",
+              { className: "grid-4" },
+              services.map(service =>
+                e(
+                  "article",
+                  { className: "service-card", key: service.title },
+                  e("div", { className: "service-icon", "aria-hidden": "true" }, service.icon),
+                  e("h3", null, service.title),
+                  e("p", null, service.text),
+                  e(
+                    "ul",
+                    { className: "service-points" },
+                    service.points.map(point =>
+                      e("li", { key: point }, point)
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function ProjectsSection() {
+        const ref = useReveal();
+        const [activeProject, setActiveProject] = useState(null);
+        const [activeImageIndex, setActiveImageIndex] = useState(0);
+        const modalRef = useRef(null);
+        const closeButtonRef = useRef(null);
+        const lastFocusedElementRef = useRef(null);
+
+        useEffect(() => {
+          if (!activeProject) {
+            return undefined;
+          }
+
+          function handleEsc(event) {
+            if (event.key === "Escape") {
+              closeProjectSamples();
+            }
+          }
+
+          window.addEventListener("keydown", handleEsc);
+
+          return () => window.removeEventListener("keydown", handleEsc);
+        }, [activeProject]);
+
+        useEffect(() => {
+          if (activeProject) {
+            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+            document.body.style.overflow = "hidden";
+            if (scrollbarWidth > 0) {
+              document.body.style.paddingRight = `${scrollbarWidth}px`;
+            }
+
+            if (closeButtonRef.current) {
+              closeButtonRef.current.focus();
+            } else if (modalRef.current) {
+              modalRef.current.focus();
+            }
+
+            return () => {
+              document.body.style.overflow = "";
+              document.body.style.paddingRight = "";
+            };
+          }
+        }, [activeProject]);
+
+        function openProjectSamples(project) {
+          lastFocusedElementRef.current = document.activeElement;
+          setActiveProject(project);
+          setActiveImageIndex(0);
+        }
+
+        function closeProjectSamples() {
+          const previousFocus = lastFocusedElementRef.current;
+          setActiveProject(null);
+          setActiveImageIndex(0);
+
+          window.setTimeout(() => {
+            if (previousFocus && typeof previousFocus.focus === "function") {
+              previousFocus.focus();
+            }
+          }, 0);
+        }
+
+        const activeImage =
+          activeProject && activeProject.sampleImages
+            ? activeProject.sampleImages[activeImageIndex]
+            : null;
+
+        return e(
+          Fragment,
+          null,
+          e(
+            "section",
+            { id: "projects" },
+            e(
+              "div",
+              { className: "container reveal", ref },
+              e(SectionHeader, {
+                eyebrow: "Featured Projects",
+                title: "Selected systems delivered for real operations.",
+                text: "Each project highlights full-stack delivery with emphasis on process improvement, reporting support, and day-to-day reliability."
+              }),
+              e(
+                "div",
+                { className: "projects-grid" },
+                projects.map(project =>
+                  e(
+                    "article",
+                    { className: "project-card", key: project.title },
+                    e(
+                      "div",
+                      { className: "project-meta" },
+                      project.tags.map(tag =>
+                        e("span", { className: "meta-chip", key: tag }, tag)
+                      )
+                    ),
+                    e("h3", null, project.title),
+                    e("p", null, project.summary),
+                    e(
+                      "div",
+                      { className: "project-links" },
+                      project.links.map(link =>
+                        e("a", { className: "btn secondary", key: link.label, href: link.href }, link.label)
+                      ),
+                      project.sampleImages && project.sampleImages.length > 0
+                        ? e(
+                            "button",
+                            {
+                              type: "button",
+                              className: "btn secondary",
+                              onClick: () => openProjectSamples(project)
+                            },
+                            "View Sample"
+                          )
+                        : null
+                    )
+                  )
+                )
+              )
+            )
+          ),
+          activeProject && activeImage
+            ? e(
+                "div",
+                {
+                  className: "project-modal-backdrop",
+                  onClick: closeProjectSamples
+                },
+                e(
+                  "div",
+                  {
+                    className: "project-modal",
+                    role: "dialog",
+                    "aria-modal": "true",
+                    "aria-label": `${activeProject.title} sample images`,
+                    tabIndex: -1,
+                    ref: modalRef,
+                    onClick: event => event.stopPropagation()
+                  },
+                  e(
+                    "div",
+                    { className: "project-modal-head" },
+                    e("h3", null, `${activeProject.title} Samples`),
+                    e(
+                      "button",
+                      {
+                        type: "button",
+                        className: "project-modal-close",
+                        ref: closeButtonRef,
+                        onClick: closeProjectSamples,
+                        "aria-label": "Close sample window"
+                      },
+                      "X"
+                    )
+                  ),
+                  e(
+                    "div",
+                    { className: "project-modal-stage" },
+                    e("img", {
+                      className: "project-modal-image",
+                      src: activeImage,
+                      alt: `${activeProject.title} sample ${activeImageIndex + 1}`
+                    })
+                  ),
+                  activeProject.sampleImages.length > 1
+                    ? e(
+                        "div",
+                        { className: "project-modal-thumbs" },
+                        activeProject.sampleImages.map((imagePath, index) =>
+                          e(
+                            "button",
+                            {
+                              type: "button",
+                              className: `project-thumb${activeImageIndex === index ? " is-active" : ""}`,
+                              key: imagePath,
+                              onClick: () => setActiveImageIndex(index),
+                              "aria-label": `View sample image ${index + 1}`
+                            },
+                            e("img", { src: imagePath, alt: `${activeProject.title} thumbnail ${index + 1}` })
+                          )
+                        )
+                      )
+                    : null
+                )
+              )
+            : null
+        );
+      }
+
+      function CaseStudiesSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "case-studies" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Case Studies",
+              title: "Problem, implementation, and operational result.",
+              text: "Each case summary focuses on practical business context and the full-stack execution used to improve system reliability and workflows."
+            }),
+            e(
+              "div",
+              { className: "studies-grid grid-2" },
+              caseStudies.map(study =>
+                e(
+                  "article",
+                  { className: "study-card", key: study.title },
+                  e("h3", null, study.title),
+                  e(
+                    "ul",
+                    { className: "study-list" },
+                    e("li", { key: "problem" }, e("strong", null, "Problem:"), ` ${study.problem}`),
+                    e("li", { key: "solution" }, e("strong", null, "Solution:"), ` ${study.solution}`)
+                  ),
+                  e(
+                    "div",
+                    { className: "study-metrics" },
+                    study.result.map(metric =>
+                      e(
+                        "div",
+                        { className: "metric-block", key: metric.label },
+                        e("strong", null, metric.stat),
+                        e("span", { className: "muted-label" }, metric.label)
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function TimelineSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "experience" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Experience",
+              title: "A track record of systems delivery and support.",
+              text: "Across multiple organizations, the focus has been stable operations, reliable reporting, and maintainable full-stack implementations."
+            }),
+            e(
+              "div",
+              { className: "timeline-grid grid-3" },
+              timeline.map(item =>
+                e(
+                  "article",
+                  { className: "timeline-card", key: item.period },
+                  e("span", { className: "eyebrow", style: { marginBottom: "0" } }, item.period),
+                  e("h3", null, item.role),
+                  e("div", { className: "timeline-meta" }, item.company),
+                  e("p", null, item.summary),
+                  e(
+                    "details",
+                    null,
+                    e("summary", null, "View more"),
+                    e("p", { style: { marginTop: "12px" } }, item.details)
+                  )
+                )
+              )
+            )
+          )
+        );
+      }     
+
+      function StackSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "stack" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Tech Stack",
+              title: "Tools used to build and support production systems.",
+              text: "Technology choices are grounded in maintainability, delivery speed, and operational reliability across frontend, backend, and data layers."
+            }),
+            e(
+              "div",
+              { className: "stack-grid" },
+              techStack.map(item =>
+                e(
+                  "article",
+                  { className: "stack-card", key: item.name },
+                  e(
+                    "div",
+                    { className: "stack-icon" },
+                    item.logo
+                      ? e("img", { className: "stack-logo", src: item.logo, alt: `${item.name} logo`, loading: "lazy" })
+                      : e("span", { className: "stack-fallback", "aria-hidden": "true" }, item.icon || "STACK")
+                  ),
+                  e("h3", null, item.name),
+                  e("p", null, item.text)
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function StackSkillsSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "stack-skills" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Skills",
+              title: "Core engineering skills that support delivery.",
+              text: "These strengths complement the tech stack and help keep projects practical, consistent, and outcome-focused."
+            }),
+            e(
+              "div",
+              { className: "stack-grid" },
+              stackSkills.map(item =>
+                e(
+                  "article",
+                  { className: "stack-card", key: item.name },
+                  e("div", { className: "stack-icon", "aria-hidden": "true" }, item.icon),
+                  e("h3", null, item.name),
+                  e("p", null, item.text)
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function InsightsSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "insights" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Insights",
+              title: "Engineering notes from full-stack project work.",
+              text: "This section shares practical lessons from maintaining and improving business-critical web systems in real operational settings."
+            }),
+            e(
+              "div",
+              { className: "blog-grid" },
+              insights.map(item =>
+                e(
+                  "article",
+                  { className: "blog-card", key: item.title },
+                  e("small", null, item.meta),
+                  e("h3", null, item.title),
+                  e("p", null, item.text),
+                  e("a", { className: "btn secondary", href: "#contact" }, "Request article sample")
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function ContactSection() {
+        const ref = useReveal();
+
+        return e(
+          "section",
+          { id: "contact" },
+          e(
+            "div",
+            { className: "container reveal", ref },
+            e(SectionHeader, {
+              eyebrow: "Contact",
+              title: "Discuss a full-stack role or system project.",
+              text: "Use this section to start a conversation about application development, modernization, maintenance, or reporting-focused system work."
+            }),
+            e(
+              "div",
+              { className: "contact-layout" },
+              e(
+                "article",
+                { className: "contact-card" },
+                e("h3", null, "Project fit"),
+                e(
+                  "p",
+                  { style: { marginTop: "12px", marginBottom: "18px" } },
+                  "Best for teams that need dependable full-stack engineering with clear communication, practical architecture, and ongoing support."
+                ),
+                e(
+                  "ul",
+                  { className: "contact-list" },
+                  e("li", { key: "phone" }, "Phone: available on request"),
+                  e("li", { key: "location" }, "Bacolod City, Western Visayas, Philippines"),
+                  e("li", { key: "response" }, "Typical reply time: within 1 business day")
+                ),
+                e(
+                  "div",
+                  { className: "social-row", style: { marginTop: "20px" } },
+                  e("a", { className: "btn secondary", href: "#top" }, "Back to top")
+                )
+              ),
+              e(
+                "article",
+                { className: "contact-card" },
+                e("h3", null, "Socials"),
+                e(
+                  "p",
+                  { style: { marginTop: "12px", marginBottom: "18px" } },
+                  "Connect with me directly through these platforms."
+                ),
+                e(
+                  "div",
+                  { className: "social-list" },
+                  e(
+                    "a",
+                    { className: "social-link", href: "https://www.facebook.com/blink909", target: "_blank", rel: "noreferrer" },
+                    e("img", {
+                      className: "social-logo",
+                      src: "assets/images/facebook-logo.svg",
+                      alt: "Facebook logo"
+                    }),
+                    e(
+                      "span",
+                      { className: "social-copy" },
+                      e("span", { className: "social-label" }, "Facebook"),
+                      e("span", { className: "social-handle" }, "facebook.com/blink909")
+                    )
+                  ),
+                  e(
+                    "a",
+                    { className: "social-link", href: "https://www.linkedin.com/in/martin-louie-2b2aa583", target: "_blank", rel: "noreferrer" },
+                    e("img", {
+                      className: "social-logo",
+                      src: "assets/images/linkedin-logo.svg",
+                      alt: "LinkedIn logo"
+                    }),
+                    e(
+                      "span",
+                      { className: "social-copy" },
+                      e("span", { className: "social-label" }, "LinkedIn"),
+                      e("span", { className: "social-handle" }, "linkedin.com/in/martin-louie-2b2aa583")
+                    )
+                  ),
+                  e(
+                    "a",
+                    { className: "social-link", href: "mailto:martin.biz.developer@gmail.com" },
+                    e("img", {
+                      className: "social-logo",
+                      src: "assets/images/gmail-logo.svg",
+                      alt: "Gmail logo"
+                    }),
+                    e(
+                      "span",
+                      { className: "social-copy" },
+                      e("span", { className: "social-label" }, "Gmail"),
+                      e("span", { className: "social-handle" }, "martin.biz.developer@gmail.com")
+                    )
+                  )
+                )
+              )
+            )
+          )
+        );
+      }
+
+      function Footer() {
+        return e(
+          "footer",
+          { className: "footer" },
+          e(
+            "div",
+            { className: "container footer-shell" },
+            e("p", null, `Copyright ${new Date().getFullYear()} Martin Louie Sobrino. Portfolio built in React.`),
+            e(
+              "div",
+              { className: "footer-nav" },
+              e("a", { href: "#top" }, "Top"),
+              e("a", { href: "#projects" }, "Projects"),
+              e("a", { href: "#contact" }, "Contact")
+            )
+          )
+        );
+      }
+
+      function App() {
+        const [isLoaded, setIsLoaded] = useState(false);
+
+        useEffect(() => {
+          const timerId = window.setTimeout(() => {
+            setIsLoaded(true);
+          }, 550);
+
+          return () => window.clearTimeout(timerId);
+        }, []);
+
+        useEffect(() => {
+          function handlePointerMove(event) {
+            document.documentElement.style.setProperty("--mouse-x", `${event.clientX}px`);
+            document.documentElement.style.setProperty("--mouse-y", `${event.clientY}px`);
+          }
+
+          window.addEventListener("pointermove", handlePointerMove, { passive: true });
+
+          return () => window.removeEventListener("pointermove", handlePointerMove);
+        }, []);
+
+        return e(
+          Fragment,
+          null,
+          e(
+            "div",
+            { className: `loader${isLoaded ? " is-hidden" : ""}`, "aria-hidden": isLoaded ? "true" : "false" },
+            e(
+              "div",
+              { className: "loader-mark" },
+              e("div", { className: "loader-ring" }),
+              e("div", null, "Initializing portfolio")
+            )
+          ),
+          e(
+            "div",
+            { className: "page-shell" },
+            e(Header),
+            e(
+              "main",
+              null,
+              e(Hero),
+              e(AboutSection),
+              e(SkillsSection),
+              e(ServicesSection),
+              e(ProjectsSection),
+              e(CaseStudiesSection),
+              e(TimelineSection),
+              e(StackSection),
+              e(StackSkillsSection),
+              e(InsightsSection),
+              e(ContactSection)
+            ),
+            e(Footer)
+          )
+        );
+      }
+
+      window.addEventListener("load", () => {
+        window.setTimeout(() => {
+          ReactDOM.createRoot(document.getElementById("app")).render(e(App));
+        }, 180);
+      });
+    })();
+  </script>
+</body>
+</html>
